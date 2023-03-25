@@ -19,19 +19,20 @@ import java.util.Collections;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "users")
 // TODO: 23.03.2023 dodać implement UserDetails
 public class AppUser implements UserDetails {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "FirstName")
+    @Column(name = "First_Name")
     @Nonnull
     private String firstName;
-    @Column(name = "LastName")
+    @Column(name = "Last_Name")
     @Nonnull
     private String lastName;
-    @Column(name = "NickName")
+    @Column(name = "Nick_Name")
     @Nonnull
     private String nickname;
     @Column(name = "Email")
