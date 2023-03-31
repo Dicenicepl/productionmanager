@@ -1,42 +1,41 @@
 package com.example.demo.entity;
 
 import com.example.demo.role.Role;
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "users")
-// TODO: 23.03.2023 dodać implement UserDetails
 public class AppUser {
+    @SequenceGenerator(
+            name = "user_sequence",
+            sequenceName = "user_sequence",
+            allocationSize = 1
+    )
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "user_sequence"
+    )
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "First_Name")
-    @Nonnull
+    @Column(name = "First_Name",nullable = false)
     private String firstName;
-    @Column(name = "Last_Name")
-    @Nonnull
+    @Column(name = "Last_Name",nullable = false)
     private String lastName;
-    @Column(name = "Nick_Name")
-    @Nonnull
+    @Column(name = "Nick_Name",nullable = false)
     private String nickname;
-    @Column(name = "Email")
-    @Nonnull
+    @Column(name = "Email",nullable = false)
     private String email;
-    @Column(name = "Password")
-    @Nonnull
+    @Column(name = "Password",nullable = false)
     private String password;
-    @Column(name = "Role")
-    @Nonnull
+    @Column(name = "Role",nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public AppUser(String firstName, String lastName, String nickname, String email, String password, Role role) {
@@ -45,7 +44,20 @@ public class AppUser {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
-        this.role = role;
+        this.role = selectRole(String.valueOf(role));
+    }
+    private Role selectRole(String role){
+        if (!role.isBlank()) {
+            switch (role) {
+                case "ADMIN" -> {
+                    return Role.ADMIN;
+                }
+                case "USER" -> {
+                    return Role.USER;
+                }
+            }
+        }
+        return null;
     }
 
 }
