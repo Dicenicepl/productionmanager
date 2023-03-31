@@ -31,6 +31,8 @@ public class AppService {
     public AppOrder findOrderByName(String name){
         return orderRepository.findAppOrderByProductName(name);
     }
+
+    //DeleteMapping
     public boolean deleteOrder(Long id){
         if (orderRepository.findById(id).isPresent()){
             orderRepository.deleteById(id);

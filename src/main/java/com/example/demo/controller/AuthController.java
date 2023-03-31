@@ -16,7 +16,12 @@ public class AuthController {
         this.appService = appService;
     }
 
-    @GetMapping("/order/listOrders")
+    @GetMapping("order/getorderbyname")
+    public AppOrder getOrderById(String name){
+        return appService.findOrderByName(name);
+    }
+
+    @GetMapping("/order/listorders")
     public List<AppOrder> listOrders(){
         return appService.listAllOrders();
     }
