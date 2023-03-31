@@ -15,13 +15,24 @@ public class AppService {
 
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
-
+    //User management*
     public void registration(AppUser appUser){
             userRepository.save(appUser);
     }
     public AppUser findUserByEmail(String email){
         return userRepository.findUserByEmail(email);
     }
+    public List<AppUser> listAllUsers(){
+        return userRepository.findAll();
+    }
+    public boolean deleteUser(Long id){
+        if (userRepository.existsById(id)){
+            userRepository.deleteById(id);
+            return true;
+        }else return false;
+    }
+    //*User management
+    //Order management*
     public void orderProduct(AppOrder appOrder){
         orderRepository.save(appOrder);
     }
@@ -31,6 +42,7 @@ public class AppService {
     public AppOrder findOrderByName(String name){
         return orderRepository.findAppOrderByProductName(name);
     }
+    //*Order management
 
     //DeleteMapping
     public boolean deleteOrder(Long id){

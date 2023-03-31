@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.AppOrder;
+import com.example.demo.entity.AppUser;
 import com.example.demo.service.AppService;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,20 +11,32 @@ import java.util.List;
 @RequestMapping("/v1/authcontroller")
 public class AuthController {
     //autoryzowani użytkownicy mają dostęp do tych kontrolerów
-
     private final AppService appService;
     public AuthController(AppService appService) {
         this.appService = appService;
     }
 
-    @GetMapping("order/getorderbyname")
-    public AppOrder getOrderById(String name){
-        return appService.findOrderByName(name);
+    @GetMapping("/user/listusers")
+    public List<AppUser> listUsers(){
+        return appService.listAllUsers();
+    }
+    @GetMapping("/user/finduserbyemail")
+    public AppUser findUserByEmail(String email){
+        return appService.findUserByEmail(email);
+    }
+    @DeleteMapping("/user/deleteuser/{id}")
+    public boolean deleteUser(@PathVariable("id") Long id){
+        return appService.deleteUser(id);
     }
 
     @GetMapping("/order/listorders")
     public List<AppOrder> listOrders(){
         return appService.listAllOrders();
+    }
+
+    @GetMapping("/order/getorderbyname")
+    public AppOrder getOrderById(String name){
+        return appService.findOrderByName(name);
     }
 
     // TODO: 28.03.2023 wyciąganie zalogowanego użytkownika i wklejanie go jako productOwner
@@ -34,7 +47,6 @@ public class AuthController {
                 appOrderRequest.getDescription(),
                 appOrderRequest.getProductOwner()
         );
-        System.out.println(appOrder.toString());
         appService.orderProduct(appOrder);
     }
     @DeleteMapping("/order/deleteorder/{id}")
